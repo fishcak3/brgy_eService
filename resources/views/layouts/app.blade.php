@@ -1,36 +1,44 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barangay Dashboard</title>
+    @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
+</head>
+<body class="bg-green-50 font-sans">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <div class="flex h-screen">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <!-- Sidebar -->
+        <aside class="w-64 bg-green-900 text-white flex flex-col">
+            <div class="p-4 text-center bg-yellow-400 text-green-900 font-bold text-lg">
+                Bakitiw Online Services
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="{{ route('dashboard') }}" class="block py-2 px-3 rounded hover:bg-green-700">Dashboard</a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-green-700">Requests</a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-green-700">Complaints</a>
+                <a href="#" class="block py-2 px-3 rounded hover:bg-green-700">Profile</a>
+            </nav>
+            <div class="p-4">
+                <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                    <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-3 rounded">
+                        Logout
+                    </button>
+                </form>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <livewire:layout.navigation />
+            </div>
+        </aside>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+        <!-- Main Content -->
+        <main class="flex-1 p-6 overflow-y-auto">
+            @yield('content')
+        </main>
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
-    </body>
+    </div>
+
+</body>
 </html>
