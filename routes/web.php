@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
 
 Route::view('/', 'welcome');
 
@@ -16,7 +17,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/dashboard', fn() => view('userdashboard.admin.dashboard'))
         ->name('admin.dashboard')
-        ->middleware('role:superadmin');
+        ->middleware('role:admin');
 });
 
 
@@ -38,3 +39,7 @@ Route::post('/logout', function () {
 
     return redirect('/'); // Change to /login if you want
 })->name('logout');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware(['auth']);

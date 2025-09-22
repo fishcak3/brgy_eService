@@ -9,28 +9,7 @@
         <p class="text-gray-600">Welcome, {{ Auth::user()->name }}. Manage barangay services and residents.</p>
     </div>
 
-    <!-- Quick Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
-        <x-dashboard.stat label="Pending Requests" 
-            count="{{ $requests->where('status','pending')->count() }}" 
-            icon="alert-circle" color="text-yellow-600" />
 
-        <x-dashboard.stat label="Processing" 
-            count="{{ $requests->where('status','processing')->count() }}" 
-            icon="clock" color="text-blue-600" />
-
-        <x-dashboard.stat label="Open Complaints" 
-            count="{{ $complaints->whereIn('status',['open','pending'])->count() }}" 
-            icon="flag" color="text-orange-600" />
-
-        <x-dashboard.stat label="Completed Today" 
-            count="{{ $requests->where('status','completed')->count() }}" 
-            icon="check-circle" color="text-green-600" />
-
-        <x-dashboard.stat label="Total Residents" 
-            count="{{ $residents->count() }}" 
-            icon="users" color="text-indigo-600" />
-    </div>
 
     <!-- Tabs -->
     <div x-data="{ tab: 'requests' }">
