@@ -5,6 +5,21 @@ use Illuminate\Support\Facades\Auth;
 
 Route::view('/', 'welcome');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/resident/dashboard', fn() => view('userdashboard.resident.dashboard'))
+        ->name('resident.dashboard')
+        ->middleware('role:resident');
+
+    Route::get('/staff/dashboard', fn() => view('userdashboard.staff.dashboard'))
+        ->name('staff.dashboard')
+        ->middleware('role:staff');
+
+    Route::get('/admin/dashboard', fn() => view('userdashboard.admin.dashboard'))
+        ->name('admin.dashboard')
+        ->middleware('role:superadmin');
+});
+
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
