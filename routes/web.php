@@ -2,32 +2,38 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ResidentController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DocumentRequestController;
+use App\Http\Controllers\ProfileController;
 
 Route::view('/', 'welcome');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/resident/dashboard', fn() => view('userdashboard.resident.dashboard'))
-        ->name('resident.dashboard')
-        ->middleware('role:resident');
+    Route::get('/resident/dashboard', [ResidentController::class, 'dashboard'])
+        ->middleware('role:resident')
+        ->name('resident.dashboard');
 
-    Route::get('/staff/dashboard', fn() => view('userdashboard.staff.dashboard'))
-        ->name('staff.dashboard')
-        ->middleware('role:staff');
+    Route::get('/staff/dashboard', [StaffController::class, 'dashboard'])
+        ->middleware('role:staff')
+        ->name('staff.dashboard');
 
-    Route::get('/admin/dashboard', fn() => view('userdashboard.admin.dashboard'))
-        ->name('admin.dashboard')
-        ->middleware('role:admin');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
+        ->middleware('role:admin')
+        ->name('admin.dashboard');
 });
 
+Route::middleware(['auth', 'role:resident'])->group(function () {
+    Route::resource('document-requests', DocumentRequestController::class);
+});
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
 
 require __DIR__.'/auth.php';
 

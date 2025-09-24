@@ -12,17 +12,32 @@ class DocumentRequest extends Model
     protected $fillable = [
         'user_id',
         'request_type_id',
+        'reference_no',
+        'requested_date',
+        'needed_date',
         'status',
-        'details'
+        'priority',
+        'fee',
+        'details',
+        'assigned_to',
+        'completed_at',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
+    // ✅ Relation to RequestType
     public function requestType()
     {
-        return $this->belongsTo(RequestType::class);
+        return $this->belongsTo(RequestType::class, 'request_type_id');
+    }
+
+    // ✅ Relation to User (Resident who requested)
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // ✅ Relation to Staff (assigned staff)
+    public function staff()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 }

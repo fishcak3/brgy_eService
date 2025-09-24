@@ -9,7 +9,7 @@ class Announcement extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'title', 'content', 'published_at'];
+    protected $fillable = ['user_id', 'title', 'content', 'created_at'];
 
     public function author()
     {

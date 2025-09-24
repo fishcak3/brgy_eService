@@ -29,7 +29,7 @@ $login = function () {
             return redirect()->route('resident.dashboard');
         case 'staff':
             return redirect()->route('staff.dashboard');
-        case 'superadmin':
+        case 'admin':
             return redirect()->route('admin.dashboard');
         default:
             return redirect()->route('welcome');

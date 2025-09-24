@@ -1,75 +1,59 @@
-@extends('layouts.app')
+@extends('layouts.app') {{-- adjust if you use a different layout --}}
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
-    <!-- Welcome Header -->
+
+    {{-- Welcome Header --}}
     <div class="mb-8">
         <h1 class="text-3xl text-gray-900 mb-2">Staff Dashboard</h1>
-        <p class="text-gray-600">Welcome, {{ Auth::user()->name }}. Manage barangay services and residents.</p>
+        <p class="text-gray-600">Welcome, {{ Auth::user()->name }}</p>
     </div>
 
+    {{-- Quick Stats (empty placeholders) --}}
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+        <div class="bg-white shadow rounded-lg p-6">Pending Requests</div>
+        <div class="bg-white shadow rounded-lg p-6">Processing</div>
+        <div class="bg-white shadow rounded-lg p-6">Open Complaints</div>
+        <div class="bg-white shadow rounded-lg p-6">Completed Today</div>
+        <div class="bg-white shadow rounded-lg p-6">Total Residents</div>
+    </div>
 
-
-    <!-- Tabs -->
+    {{-- Tabs (empty layout) --}}
     <div x-data="{ tab: 'requests' }">
-        <div class="grid grid-cols-5 mb-6 text-center border-b">
-            <button class="py-2" :class="{ 'border-b-2 border-indigo-600 font-medium' : tab === 'requests' }" @click="tab = 'requests'">Document Requests</button>
-            <button class="py-2" :class="{ 'border-b-2 border-indigo-600 font-medium' : tab === 'complaints' }" @click="tab = 'complaints'">Manage Complaints</button>
-            <button class="py-2" :class="{ 'border-b-2 border-indigo-600 font-medium' : tab === 'residents' }" @click="tab = 'residents'">Resident Records</button>
-            <button class="py-2" :class="{ 'border-b-2 border-indigo-600 font-medium' : tab === 'announcements' }" @click="tab = 'announcements'">Announcements</button>
-            <button class="py-2" :class="{ 'border-b-2 border-indigo-600 font-medium' : tab === 'messages' }" @click="tab = 'messages'">Staff Messages</button>
+        <div class="grid grid-cols-5 border-b mb-6">
+            <button @click="tab='requests'" :class="tab==='requests' ? 'border-b-2 border-blue-600 text-blue-600' : ''" class="py-2">Document Requests</button>
+            <button @click="tab='complaints'" :class="tab==='complaints' ? 'border-b-2 border-blue-600 text-blue-600' : ''" class="py-2">Manage Complaints</button>
+            <button @click="tab='residents'" :class="tab==='residents' ? 'border-b-2 border-blue-600 text-blue-600' : ''" class="py-2">Resident Records</button>
+            <button @click="tab='announcements'" :class="tab==='announcements' ? 'border-b-2 border-blue-600 text-blue-600' : ''" class="py-2">Announcements</button>
+            <button @click="tab='messages'" :class="tab==='messages' ? 'border-b-2 border-blue-600 text-blue-600' : ''" class="py-2">Staff Messages</button>
         </div>
 
-        <!-- Requests Tab -->
-        <div x-show="tab === 'requests'" class="space-y-6">
-            <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-lg font-semibold mb-4">Request Management</h2>
-                @foreach($requests as $request)
-                    <div class="p-4 border rounded-lg mb-4">
-                        <div class="flex items-center justify-between mb-3">
-                            <div>
-                                <p class="font-medium">{{ $request->type }}</p>
-                                <p class="text-sm text-gray-600">{{ $request->id }} • {{ $request->resident->name }}</p>
-                            </div>
-                            <span class="px-2 py-1 text-xs rounded 
-                                @if($request->status=='pending') bg-yellow-100 text-yellow-800
-                                @elseif($request->status=='processing') bg-blue-100 text-blue-800
-                                @elseif($request->status=='completed') bg-green-100 text-green-800
-                                @endif">
-                                {{ ucfirst($request->status) }}
-                            </span>
-                        </div>
-                        <p class="text-sm text-gray-600">Submitted: {{ $request->date_submitted->format('M d, Y') }}</p>
-                        @if($request->date_completed)
-                            <p class="text-sm text-gray-600">Completed: {{ $request->date_completed->format('M d, Y') }}</p>
-                        @endif
-                    </div>
-                @endforeach
-            </div>
+        {{-- Empty tab content placeholders --}}
+        <div x-show="tab==='requests'" class="bg-white shadow p-6 rounded-lg">
+            <h2 class="font-semibold mb-3">Document Requests</h2>
+            <div class="text-gray-500">No data yet</div>
         </div>
 
-        <!-- Residents Tab -->
-        <div x-show="tab === 'residents'" class="space-y-6">
-            <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-lg font-semibold mb-4">Resident Records</h2>
-                @foreach($residents as $resident)
-                    <div class="p-4 border rounded-lg mb-4 flex justify-between">
-                        <div>
-                            <p class="font-medium">{{ $resident->name }}</p>
-                            <p class="text-sm text-gray-600">{{ $resident->email }}</p>
-                            <p class="text-sm text-gray-600">{{ $resident->address }}</p>
-                        </div>
-                        <span class="px-2 py-1 text-xs rounded 
-                            {{ $resident->status == 'verified' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                            {{ ucfirst($resident->status) }}
-                        </span>
-                    </div>
-                @endforeach
-            </div>
+        <div x-show="tab==='complaints'" class="bg-white shadow p-6 rounded-lg">
+            <h2 class="font-semibold mb-3">Complaints</h2>
+            <div class="text-gray-500">No data yet</div>
         </div>
 
-        <!-- Complaints, Announcements, Messages Tabs can follow similar structure -->
+        <div x-show="tab==='residents'" class="bg-white shadow p-6 rounded-lg">
+            <h2 class="font-semibold mb-3">Residents</h2>
+            <div class="text-gray-500">No data yet</div>
+        </div>
+
+        <div x-show="tab==='announcements'" class="bg-white shadow p-6 rounded-lg">
+            <h2 class="font-semibold mb-3">Announcements</h2>
+            <div class="text-gray-500">No data yet</div>
+        </div>
+
+        <div x-show="tab==='messages'" class="bg-white shadow p-6 rounded-lg">
+            <h2 class="font-semibold mb-3">Messages</h2>
+            <div class="text-gray-500">No data yet</div>
+        </div>
     </div>
+
 </div>
 @endsection

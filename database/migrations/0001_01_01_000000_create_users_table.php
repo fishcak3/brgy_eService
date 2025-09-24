@@ -18,6 +18,12 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['resident', 'admin', 'staff'])->default('resident');
+            $table->string('phone_number')->nullable();
+            $table->string('address')->nullable();
+            $table->date('birthdate')->nullable();
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->string('household_no')->nullable();
+            $table->string('purok')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

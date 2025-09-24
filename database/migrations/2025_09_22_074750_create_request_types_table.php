@@ -10,6 +10,8 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->unique();
             $table->text('description')->nullable();
+            $table->decimal('fee', 8, 2)->default(0);
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

@@ -27,32 +27,30 @@
                         </div>
                     </div>
 
-                    {{-- Center: Dynamic Navigation Links --}}
-                    <div class="hidden md:flex space-x-8">
-                        @auth
-                            {{-- Common links --}}
-                            <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Dashboard</a>
-                            <a href="{{ route('profile') }}" class="text-gray-700 hover:text-green-600 font-medium">My Profile</a>
+                    {{-- Common links --}}
+<a href="{{ route(Auth::user()->role . '.dashboard') }}" 
+   class="text-gray-700 hover:text-green-600 font-medium">Dashboard</a>
+<a href="{{ route('profile.edit') }}" 
+   class="text-gray-700 hover:text-green-600 font-medium">My Profile</a>
 
-                            {{-- Role-specific links --}}
-                            @switch(Auth::user()->role)
-                                @case('resident')
-                                    <a href="" class="text-gray-700 hover:text-green-600 font-medium">My Requests</a>
-                                    <a href="" class="text-gray-700 hover:text-green-600 font-medium">Announcements</a>
-                                    @break
+{{-- Role-specific links --}}
+@switch(Auth::user()->role)
+    @case('resident')
+        <a href="{{ route('resident.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">My Requests</a>
+        <a href="{{ route('resident.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Announcements</a>
+        @break
 
-                                @case('staff')
-                                    <a href="" class="text-gray-700 hover:text-green-600 font-medium">Manage Requests</a>
-                                    <a href="" class="text-gray-700 hover:text-green-600 font-medium">Reports</a>
-                                    @break
+    @case('staff')
+        <a href="{{ route('staff.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Manage Requests</a>
+        <a href="{{ route('staff.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Reports</a>
+        @break
 
-                                @case('admin')
-                                    <a href="" class="text-gray-700 hover:text-green-600 font-medium">User Management</a>
-                                    <a href="" class="text-gray-700 hover:text-green-600 font-medium">System Settings</a>
-                                    @break
-                            @endswitch
-                        @endauth
-                    </div>
+    @case('admin')
+        <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">User Management</a>
+        <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">System Settings</a>
+        @break
+@endswitch
+
 
                     {{-- Right Side: User Info --}}
                     <div class="flex items-center space-x-4">
