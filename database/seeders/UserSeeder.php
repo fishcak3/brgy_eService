@@ -13,7 +13,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-
         User::create([
             'name' => 'El Gatto',
             'email' => 'admin@test.com',
@@ -25,6 +24,7 @@ class UserSeeder extends Seeder
             'gender' => 'male',
             'household_no' => null,
             'purok' => null,
+            'photo' => 'default/admin-boy.jpeg', 
         ]);
 
         User::create([
@@ -38,6 +38,7 @@ class UserSeeder extends Seeder
             'gender' => 'female',
             'household_no' => null,
             'purok' => 'Purok 2',
+            'photo' => 'default/staff-girl.jpeg', 
         ]);
 
         User::create([
@@ -51,6 +52,7 @@ class UserSeeder extends Seeder
             'gender' => 'male',
             'household_no' => '0001',
             'purok' => 'Purok 1',
+            'photo' => 'default/resident-boy.jpeg', 
         ]);
 
         User::create([
@@ -64,6 +66,7 @@ class UserSeeder extends Seeder
             'gender' => 'female',
             'household_no' => '0002',
             'purok' => 'Purok 3',
+            'photo' => 'default/resident-girl.jpeg', 
         ]);
     }
 }

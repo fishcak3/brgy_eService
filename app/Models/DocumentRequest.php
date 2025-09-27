@@ -23,6 +23,13 @@ class DocumentRequest extends Model
         'completed_at',
     ];
 
+    // ✅ Auto-cast to Carbon instances
+    protected $casts = [
+        'requested_date' => 'date',
+        'needed_date'    => 'date',
+        'completed_at'   => 'datetime',
+    ];
+
     // ✅ Relation to RequestType
     public function requestType()
     {

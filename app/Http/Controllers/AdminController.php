@@ -12,11 +12,6 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $requests = ServiceRequest::all();
-        $complaints = Complaint::with('complaintType')->get();
-        $announcements = Announcement::all();
-        $events = Event::all();
-
-        return view('userdashboard.admin.dashboard', compact('requests', 'complaints', 'announcements', 'events'));
+        return view('userdashboard.admin.dashboard');
     }
 }

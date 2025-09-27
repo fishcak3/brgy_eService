@@ -7,6 +7,8 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DocumentRequestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\DashboardController;
 
 Route::view('/', 'welcome');
 
@@ -25,15 +27,28 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:resident'])->group(function () {
+    // Document Requests
     Route::resource('document-requests', DocumentRequestController::class);
+
+    // Complaints (all routes for residents)
+    Route::resource('complaints', ComplaintController::class)->except(['edit', 'update', 'destroy']);
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    // Profile Index (My Profile Page)
+    Route::get('/profile', [ProfileController::class, 'index'])
+        ->name('profile.index');
 
+    // Edit & Update Profile
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    // Account Deletion
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+});
 
 require __DIR__.'/auth.php';
 

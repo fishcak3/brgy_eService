@@ -8,19 +8,28 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    public function edit()
+    // ✅ Show My Profile (index page)
+    public function index()
     {
-        return view('profile.edit', [
-            'user' => Auth::user(),
-        ]);
+        $user = auth()->user();
+        return view('profile.index', compact('user'));
     }
 
+    // ✅ Edit profile page
+    public function edit()
+    {
+        $user = auth()->user();
+        return view('profile.edit', compact('user'));
+    }
+
+    // ✅ Update profile
     public function update(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . Auth::id(),
             'password' => 'nullable|string|min:8|confirmed',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = Auth::user();
@@ -31,11 +40,18 @@ class ProfileController extends Controller
             $user->password = Hash::make($request->password);
         }
 
+        // ✅ Handle profile photo upload
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('profile_photos', 'public');
+            $user->photo = $path;
+        }
+
         $user->save();
 
-        return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
+        return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
     }
 
+    // ✅ Delete account
     public function destroy(Request $request)
     {
         $user = Auth::user();

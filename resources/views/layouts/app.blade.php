@@ -28,29 +28,26 @@
                     </div>
 
                     {{-- Common links --}}
-<a href="{{ route(Auth::user()->role . '.dashboard') }}" 
-   class="text-gray-700 hover:text-green-600 font-medium">Dashboard</a>
-<a href="{{ route('profile.edit') }}" 
-   class="text-gray-700 hover:text-green-600 font-medium">My Profile</a>
+                    <a href="{{ route(Auth::user()->role . '.dashboard') }}" 
+                       class="text-gray-700 hover:text-green-600 font-medium">Dashboard</a>
 
-{{-- Role-specific links --}}
-@switch(Auth::user()->role)
-    @case('resident')
-        <a href="{{ route('resident.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">My Requests</a>
-        <a href="{{ route('resident.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Announcements</a>
-        @break
+                    {{-- Role-specific links --}}
+                    @switch(Auth::user()->role)
+                        @case('resident')
+                            <a href="{{ route('document-requests.index') }}" class="text-gray-700 hover:text-green-600 font-medium">My Requests</a>
+                            <a href="{{ route('complaints.index') }}" class="text-gray-700 hover:text-green-600 font-medium">My complaints</a>
+                            @break
 
-    @case('staff')
-        <a href="{{ route('staff.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Manage Requests</a>
-        <a href="{{ route('staff.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Reports</a>
-        @break
+                        @case('staff')
+                            <a href="{{ route('staff.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Manage Requests</a>
+                            <a href="{{ route('staff.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">Reports</a>
+                            @break
 
-    @case('admin')
-        <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">User Management</a>
-        <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">System Settings</a>
-        @break
-@endswitch
-
+                        @case('admin')
+                            <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">User Management</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-green-600 font-medium">System Settings</a>
+                            @break
+                    @endswitch
 
                     {{-- Right Side: User Info --}}
                     <div class="flex items-center space-x-4">
@@ -73,38 +70,44 @@
                         @endauth
 
                         {{-- User Dropdown --}}
-                        <div class="flex items-center space-x-2">
-                            <span class="text-gray-700 font-medium">
-                                {{ Auth::user()->name ?? 'Guest' }}
-                            </span>
-                            <span class="text-xs text-gray-500 capitalize">
-                                {{ Auth::user()->role ?? '' }}
-                            </span>
-                            <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                          d="M10 9a3 3 0 100-6 3 3 0 
-                                             000 6zm-7 9a7 7 0 1114 0H3z"
-                                          clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                        </div>
-
-                        {{-- Logout --}}
-                        @auth
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="text-gray-600 hover:text-red-600">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M17 16l4-4m0 0l-4-4m4 
-                                             4H7m6 4v1a2 2 0 11-4 
-                                             0v-1m0-8V7a2 2 0 114 0v1"/>
+                        <div class="relative">
+                            <button onclick="document.getElementById('userDropdown').classList.toggle('hidden')" 
+                                    class="flex items-center focus:outline-none">
+                                <div class="h-8 w-8 rounded-full overflow-hidden border">
+                                    @if(Auth::user()->photo)
+                                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" 
+                                             alt="Profile Photo"
+                                             class="h-full w-full object-cover">
+                                    @else
+                                        <svg class="h-8 w-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" 
+                                                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" 
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    @endif
+                                </div>
+                                <span class="ml-2 text-gray-700 font-medium">
+                                    {{ Auth::user()->name }}
+                                </span>
+                                <svg class="ml-1 w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.292l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.65a.75.75 0 01-1.08 0l-4.25-4.65a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
                                 </svg>
                             </button>
-                        </form>
-                        @endauth
+
+                            {{-- Dropdown Menu --}}
+                            <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    My Profile
+                                </a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -117,5 +120,15 @@
     </div>
 
     @stack('scripts')
+
+    <script>
+        // Close dropdown if clicking outside
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown && !e.target.closest('[onclick]') && !e.target.closest('#userDropdown')) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

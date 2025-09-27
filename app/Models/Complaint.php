@@ -12,18 +12,24 @@ class Complaint extends Model
     protected $fillable = [
         'user_id',
         'complaint_type_id',
+        'title',
+        'reference_no',
+        'location',
+        'priority',
         'status',
         'details',
+        'remarks',
         'assigned_to',
         'resolved_at'
     ];
+
 
     public function resident()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function type()
+    public function complaintType()
     {
         return $this->belongsTo(ComplaintType::class, 'complaint_type_id');
     }
