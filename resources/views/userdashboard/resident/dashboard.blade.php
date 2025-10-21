@@ -55,7 +55,7 @@
                 <div id="tab-requests" class="tab-content">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-semibold">My Requests</h3>
-                        <a href="{{ route('document-requests.create') }}">New Request</a>
+                        <a href="{{ route('resident.document-requests.create') }}">New Request</a>
                     </div>
 
                     <div class="space-y-4">
@@ -88,7 +88,7 @@
                 <div id="tab-complaints" class="tab-content hidden">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-semibold">My Complaints</h3>
-                        <a href="{{ route('complaints.create') }}" 
+                        <a href="{{ route('resident.complaints.create') }}" 
                            class="px-3 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600">
                             File Complaint
                         </a>
@@ -127,7 +127,7 @@
                     <p><span class="font-medium">Full Name:</span> {{ Auth::user()->name }}</p>
                     <p><span class="font-medium">Email:</span> {{ Auth::user()->email }}</p>
                 </div>
-                <a href="{{ route('profile.edit') }}" 
+                <a href="" 
                    class="mt-4 inline-block px-4 py-2 bg-gray-100 rounded hover:bg-gray-200 text-sm">
                     Update Profile
                 </a>
@@ -140,26 +140,8 @@
             <div class="bg-white rounded-xl shadow p-6">
                 <h2 class="text-lg font-semibold mb-4">Latest Announcements</h2>
                 <div class="space-y-4">
-                    @forelse($announcements as $a)
-                        <div class="p-3 border rounded-lg">
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="px-2 py-1 text-xs rounded 
-                                    @if($a->priority == 'high') bg-red-100 text-red-700
-                                    @elseif($a->priority == 'medium') bg-green-100 text-green-700
-                                    @else bg-gray-100 text-gray-700 @endif">
-                                    {{ ucfirst($a->priority) }}
-                                </span>
-                                <span class="text-xs text-gray-500">
-                                    {{ $a->published_at?->format('M d, Y') }}
-                                </span>
-                            </div>
-                            <h4 class="font-medium">{{ $a->title }}</h4>
-                            <p class="text-sm text-gray-600">{{ $a->content }}</p>
-                        </div>
-                    @empty
-                        <p class="text-sm text-gray-500">No announcements yet.</p>
-                    @endforelse
-                </div>
+                    <p class="text-sm text-gray-500">No announcements yet.</p>
+               </div>
                 <a href="#">View All Announcements</a>
             </div>
         </div>

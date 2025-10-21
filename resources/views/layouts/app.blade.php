@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name', 'Barangay Bakitiw E-Services Portal') }}</title>
+    <title>{{ config('app.name', 'Barangay Aliaga E-Services Portal') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
@@ -14,15 +14,13 @@
         {{-- Top Navigation --}}
         <nav class="bg-white border-b border-gray-200 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16 items-center">
+                <div class="flex justify-between h-20 items-center">
 
                     {{-- Left Side: Logo --}}
                     <div class="flex items-center space-x-2">
-                        <div class="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center text-white font-bold">
-                            B
-                        </div>
+                        <img src="{{ asset(config('barangay.logo')) }}" alt="Barangay Logo" class="w-16 h-16">
                         <div>
-                            <p class="text-gray-900 font-semibold">Barangay Bakitiw</p>
+                            <p class="text-gray-900 font-semibold">{{ config('barangay.name') }}</p>
                             <p class="text-xs text-gray-500">E-Services Portal</p>
                         </div>
                     </div>
@@ -34,8 +32,8 @@
                     {{-- Role-specific links --}}
                     @switch(Auth::user()->role)
                         @case('resident')
-                            <a href="{{ route('document-requests.index') }}" class="text-gray-700 hover:text-green-600 font-medium">My Requests</a>
-                            <a href="{{ route('complaints.index') }}" class="text-gray-700 hover:text-green-600 font-medium">My complaints</a>
+                            <a href="{{ route('resident.document-requests.index') }}" class="text-gray-700 hover:text-green-600 font-medium">My Requests</a>
+                            <a href="{{ route('resident.complaints.index') }}" class="text-gray-700 hover:text-green-600 font-medium">My Complaints</a>
                             @break
 
                         @case('staff')
@@ -49,24 +47,68 @@
                             @break
                     @endswitch
 
-                    {{-- Right Side: User Info --}}
+                    {{-- Right Side: Notifications + User Info --}}
                     <div class="flex items-center space-x-4">
-                        {{-- Notification Bell --}}
+                        {{-- Notification Dropdown --}}
                         @auth
-                        <button class="relative text-gray-600 hover:text-green-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M15 17h5l-1.405-1.405A2.032 
-                                         2.032 0 0118 14.158V11a6.002 
-                                         6.002 0 00-4-5.659V5a2 2 0 
-                                         10-4 0v.341C7.67 6.165 6 
-                                         8.388 6 11v3.159c0 .538-.214 
-                                         1.055-.595 1.436L4 17h5m6 
-                                         0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                            </svg>
-                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                        </button>
+
+                        @php
+                            $notifications = \Illuminate\Notifications\DatabaseNotification::where('notifiable_id', auth()->id())
+                                ->latest()
+                                ->take(5)
+                                ->get();
+
+                            $unreadCount = \Illuminate\Notifications\DatabaseNotification::where('notifiable_id', auth()->id())
+                                ->whereNull('read_at')
+                                ->count();
+                        @endphp
+
+                        <div class="relative">
+                            <button onclick="document.getElementById('notifDropdown').classList.toggle('hidden')" 
+                                    class="relative text-gray-600 hover:text-green-600 focus:outline-none">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                                     viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M15 17h5l-1.405-1.405A2.032 
+                                             2.032 0 0118 14.158V11a6.002 
+                                             6.002 0 00-4-5.659V5a2 2 0 
+                                             10-4 0v.341C7.67 6.165 6 
+                                             8.388 6 11v3.159c0 .538-.214 
+                                             1.055-.595 1.436L4 17h5m6 
+                                             0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                </svg>
+                                @if($unreadCount > 0)
+                                    <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                                @endif
+                            </button>
+
+                            {{-- Dropdown Menu --}}
+                            <div id="notifDropdown" 
+                                 class="hidden absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 max-h-96 overflow-y-auto">
+                                <div class="p-3 border-b text-sm font-semibold text-gray-700">
+                                    Notifications
+                                </div>
+                                @forelse($notifications as $notif)
+                                    <div class="px-4 py-2 text-sm border-b {{ $notif->read_at ? 'bg-white' : 'bg-gray-100' }}">
+                                        <p class="font-medium text-gray-800">
+                                            {{ $notif->data['title'] ?? 'Notification' }}
+                                        </p>
+                                        <p class="text-gray-600">
+                                            {{ $notif->data['message'] ?? '' }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">{{ $notif->created_at->diffForHumans() }}</p>
+                                    </div>
+                                @empty
+                                    <div class="px-4 py-2 text-sm text-gray-500">
+                                        No notifications yet.
+                                    </div>
+                                @endforelse
+                                <a href="{{ route('notifications.index') }}" 
+                                   class="block px-4 py-2 text-sm text-center text-green-600 hover:bg-gray-100">
+                                    View all
+                                </a>
+                            </div>
+                        </div>
                         @endauth
 
                         {{-- User Dropdown --}}
@@ -96,7 +138,7 @@
 
                             {{-- Dropdown Menu --}}
                             <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <a href="{{ route('profile.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     My Profile
                                 </a>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -122,11 +164,16 @@
     @stack('scripts')
 
     <script>
-        // Close dropdown if clicking outside
+        // Close dropdowns if clicking outside
         window.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('userDropdown');
-            if (dropdown && !e.target.closest('[onclick]') && !e.target.closest('#userDropdown')) {
-                dropdown.classList.add('hidden');
+            const notifDropdown = document.getElementById('notifDropdown');
+            const userDropdown = document.getElementById('userDropdown');
+
+            if (notifDropdown && !e.target.closest('[onclick]') && !e.target.closest('#notifDropdown')) {
+                notifDropdown.classList.add('hidden');
+            }
+            if (userDropdown && !e.target.closest('[onclick]') && !e.target.closest('#userDropdown')) {
+                userDropdown.classList.add('hidden');
             }
         });
     </script>

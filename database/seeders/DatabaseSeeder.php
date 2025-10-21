@@ -3,21 +3,21 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\ComplaintType;
+use App\Models\RequestType;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
+
         $this->call([
             UserSeeder::class,
-            AnnouncementSeeder::class,
+            PositionSeeder::class,
             ComplaintTypeSeeder::class,
-            ComplaintSeeder::class,
             RequestTypeSeeder::class,
-            DocumentRequestSeeder::class,
         ]);
     }
 }

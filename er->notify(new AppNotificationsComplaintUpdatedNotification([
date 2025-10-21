@@ -1,0 +1,22 @@
+[90m= [39m[34;4mApp\Models\User[39;24m {#6810
+    [34mid[39m: [35m1[39m,
+    [34mname[39m: "[32mWaldo Haley Sr.[39m",
+    [34memail[39m: "[32mamari64@example.org[39m",
+    [34memail_verified_at[39m: [36mnull[39m,
+    #[33mpassword[39m: "[32m$2y$12$eXVNxxMek2up9auVHWvNuuLokMQFziP5d20u3k2b8ZjPhluq0PCN.[39m",
+    [34mrole[39m: "[32madmin[39m",
+    [34mphone_number[39m: "[32m+16207963902[39m",
+    [34maddress[39m: """
+      [32m17730 Felicita Loaf Suite 047[39m\n
+      [32mMathiasside, WA 67810[39m
+      """,
+    [34mbirthdate[39m: "[32m2020-01-18[39m",
+    [34mgender[39m: "[32mmale[39m",
+    [34mhousehold_no[39m: [36mnull[39m,
+    [34mpurok[39m: "[32msunt[39m",
+    [34mphoto[39m: [36mnull[39m,
+    #[33mremember_token[39m: [36mnull[39m,
+    [34mcreated_at[39m: "[32m2025-10-01 02:10:16[39m",
+    [34mupdated_at[39m: "[32m2025-10-01 02:10:16[39m",
+  }
+

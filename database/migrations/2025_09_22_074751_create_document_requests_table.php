@@ -13,7 +13,8 @@ return new class extends Migration {
             $table->string('reference_no')->unique();
             $table->date('requested_date')->nullable();
             $table->date('needed_date')->nullable();
-            $table->enum('status', ['pending', 'processing', 'completed', 'rejected'])->default('pending');
+            $table->string('source')->nullable();
+            $table->enum('status', ['open', 'assigned', 'processing', 'approved', 'rejected'])->default('open');
             $table->enum('priority', ['low', 'medium', 'high', 'urgent'])->default('medium');
             $table->decimal('fee', 8, 2)->default(0);
             $table->text('details')->nullable();
@@ -23,7 +24,6 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
-
     }
 
     public function down(): void {

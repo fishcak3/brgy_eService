@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Barangay Bakitiw - E-Services Portal</title>
+    <title>Barangay Aliaga - E-Services Portal</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -21,7 +21,7 @@
                             B
                         </div>
                         <div>
-                            <h1 class="font-semibold text-gray-900">Barangay Bakitiw</h1>
+                            <h1 class="font-semibold text-gray-900">{{ config('barangay.name') }}</h1>
                             <p class="text-sm text-gray-600">E-Services Portal</p>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="relative">
                     <img src="https://images.unsplash.com/photo-1737907208040-d13a8ba97baf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-                         alt="Barangay Bakitiw Hall"
+                         alt="Barangay Aliaga Hall"
                          class="w-full h-96 object-cover rounded-lg shadow-xl" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
                 </div>
@@ -102,9 +102,9 @@
         <footer class="bg-gray-900 text-white py-8 px-4 sm:px-6 lg:px-8 text-center">
             <div class="flex items-center justify-center space-x-3 mb-4">
                 <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">B</div>
-                <span class="text-lg">Barangay Bakitiw</span>
+                <span class="text-lg">{{ config('barangay.name') }}</span>
             </div>
-            <p class="text-gray-400 text-sm">© {{ date('Y') }} Barangay Bakitiw. All rights reserved.</p>
+            <p class="text-gray-400 text-sm">© {{ date('Y') }} {{ config('barangay.name') }}. All rights reserved.</p>
         </footer>
     </div>
 

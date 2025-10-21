@@ -23,17 +23,25 @@ class Complaint extends Model
         'resolved_at'
     ];
 
-
+    /**
+     * Relationship: Complaint belongs to a Resident (User).
+     */
     public function resident()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * Relationship: Complaint belongs to a Type.
+     */
     public function complaintType()
     {
         return $this->belongsTo(ComplaintType::class, 'complaint_type_id');
     }
 
+    /**
+     * Relationship: Complaint assigned to a Staff (User).
+     */
     public function staff()
     {
         return $this->belongsTo(User::class, 'assigned_to');

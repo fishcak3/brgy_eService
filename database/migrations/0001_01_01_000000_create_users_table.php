@@ -13,28 +13,32 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+
+            $table->foreignId('resident_id')->nullable()->constrained('residents')->onDelete('set null');
+
+            // Authentication & Contact Info
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['resident', 'admin', 'staff'])->default('resident');
-            $table->string('phone_number')->nullable();
-            $table->string('address')->nullable();
-            $table->date('birthdate')->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
-            $table->string('household_no')->nullable();
-            $table->string('purok')->nullable();
+
+            // Role & Position Info
+            $table->enum('role', ['admin', 'staff', 'resident'])->default('resident');
+            
+            // Profile Photo
             $table->string('photo')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });
 
+        // Password Reset Tokens
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
+        // Active Sessions
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
@@ -50,8 +54,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };

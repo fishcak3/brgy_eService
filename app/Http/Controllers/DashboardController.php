@@ -8,7 +8,7 @@ use App\Models\ServiceRequest;
 use App\Models\Complaint;
 use App\Models\Announcement;
 use App\Models\Event;
-use App\Models\DocumentRequest; // ✅ Add this missing import
+use App\Models\DocumentRequest;
 
 class DashboardController extends Controller
 {

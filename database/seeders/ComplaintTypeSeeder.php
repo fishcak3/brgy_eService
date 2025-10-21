@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class ComplaintTypeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $types = [
@@ -41,8 +38,11 @@ class ComplaintTypeSeeder extends Seeder
 
         foreach ($types as $type) {
             DB::table('complaint_types')->updateOrInsert(
-                ['name' => $type['name']], // Prevent duplicates
-                $type
+                ['name' => $type['name']], 
+                array_merge($type, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ])
             );
         }
     }

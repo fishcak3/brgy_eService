@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Resident;
 
 class DocumentRequest extends Model
 {
@@ -19,6 +20,7 @@ class DocumentRequest extends Model
         'priority',
         'fee',
         'details',
+        'remarks',      
         'assigned_to',
         'completed_at',
     ];
@@ -37,10 +39,11 @@ class DocumentRequest extends Model
     }
 
     // ✅ Relation to User (Resident who requested)
-    public function user()
+    public function resident()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(resident::class, 'resident_id');
     }
+
 
     // ✅ Relation to Staff (assigned staff)
     public function staff()
